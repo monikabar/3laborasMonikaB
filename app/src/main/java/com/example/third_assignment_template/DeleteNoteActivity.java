@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 public class DeleteNoteActivity extends AppCompatActivity {
 
@@ -24,15 +25,35 @@ public class DeleteNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_note);
 
-        Spinner spSelectionForDelete = findViewById(R.id.spSelectionForDelete);
+        spSelectionForDelete = findViewById(R.id.spSelectionForDelete);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         ArrayList<String> notesList = new ArrayList<String>(sp.getStringSet("notes", new HashSet<String>()));
-        ArrayAdapter listAdapter= new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, notesList);
+
+        ArrayAdapter listAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, notesList);
         spSelectionForDelete.setAdapter(listAdapter);
     }
 
     public void onDeleteNoteClick(View view) {
         EditText txtNote = findViewById(R.id.txtNote);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor spEd = sp.edit();
+
+        Set<String> savedNotesList = sp.getStringSet("notes", new HashSet<String>());
+
+        String selectedNote = spSelectionForDelete.getSelectedItem().toString();
+
+        for (String savedNote : savedNotesList) {
+            if (!savedNote.equalsIgnoreCase(selectedNote)) {
+                Set<String> oldSet = sp.getStringSet("notes", new HashSet<String>());
+                Set<String> removedStrSet = new HashSet<String>();
+                removedStrSet.add(savedNote);
+                spEd.putStringSet("notes", removedStrSet);
+                spEd.apply();
+            }
+
+            finish();
+        }
     }
 }
