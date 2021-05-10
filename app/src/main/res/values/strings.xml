@@ -4,5 +4,4 @@
     <string name="btn_add">Add note</string>
     <string name="btn_delete">Delete note</string>
     <string name="type_note_here">Type note here</string>
-    <string name="type_note_to_delete_here">type_note_to_delete_here</string>
 </resources>

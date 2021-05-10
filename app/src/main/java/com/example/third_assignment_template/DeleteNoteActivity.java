@@ -44,16 +44,16 @@ public class DeleteNoteActivity extends AppCompatActivity {
 
         String selectedNote = spSelectionForDelete.getSelectedItem().toString();
 
-        Set<String> oldSet = sp.getStringSet("notes", new HashSet<String>());
         Set<String> removedStrSet = new HashSet<String>();
 
         for (String savedNote : savedNotesList) {
             if (!savedNote.equalsIgnoreCase(selectedNote)) {
                 removedStrSet.add(savedNote);
-                spEd.putStringSet("notes", removedStrSet);
-                spEd.apply();
             }
         }
+
+        spEd.putStringSet("notes", removedStrSet);
+        spEd.apply();
 
         finish();
     }
